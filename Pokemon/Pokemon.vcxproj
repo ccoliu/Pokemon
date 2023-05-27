@@ -136,6 +136,7 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="case.txt" />
     <Text Include="GameData.txt" />
     <Text Include="MoveLib.txt" />
     <Text Include="PokemonLib.txt" />

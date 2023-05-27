@@ -5,17 +5,26 @@
 #include <map>
 #include "Monster.h"
 #include "Move.h"
+#include "GameManager.h"
 using namespace std;
 
 map<string, int> TypeMap = { {"Normal", 0}, {"Fire", 1}, {"Water", 2}, {"Electric", 3}, {"Grass", 4}, {"Ice", 5}, {"Fighting", 6}, {"Poison", 7}, {"Ground", 8}, {"Flying", 9}, {"Psychic", 10}, {"Bug", 11}, {"Rock", 12}, {"Ghost", 13}, {"Dragon", 14}, {"Dark", 15}, {"Steel", 16}, {"Fairy", 17} };
 
 int main()
 {
+	ifstream CaseFile;
+	CaseFile.open("case.txt");
+	string MonsterLibName, MoveLibName, GameDataName;
+	bool testModeActive = false;
+
+	CaseFile >> MonsterLibName;
+	CaseFile >> MoveLibName;
+	CaseFile >> GameDataName;
 	vector<Monster> MonsterLib;
 	vector<Move> MoveLib;
 	ifstream PokemonLib;
 	ifstream Moves;
-	PokemonLib.open("PokemonLib.txt");
+	PokemonLib.open(MonsterLibName);
 	string name;
 	int typenum;
 	vector<Type> type;
@@ -44,7 +53,7 @@ int main()
 		MonsterLib.push_back(Monster(name, type, HP, attack, defense, SPattack, SPdefense, speed));
 	}
 	PokemonLib.close();
-	Moves.open("MoveLib.txt");
+	Moves.open(MoveLibName);
 	string line = "";
 	string movename;
 	Type movetype;
@@ -53,7 +62,7 @@ int main()
 	int accuracy;
 	int PP;
 	AdditionalEffect effect = NOR;
-	while (getline(Moves,line))
+	while (getline(Moves, line))
 	{
 		if (line == "") continue;
 		stringstream ss(line);
@@ -84,7 +93,7 @@ int main()
 	Moves.close();
 	vector<Monster> Player1Monster;
 	vector<Monster> Player2Monster;
-	ifstream GameData("GameData.txt");
+	ifstream GameData(GameDataName);
 	int Player1MonsterNum;
 	GameData >> Player1MonsterNum;
 	for (int i = 0; i < Player1MonsterNum; i++)
@@ -145,5 +154,31 @@ int main()
 			}
 		}
 		cout << Player2Monster[i] << endl;
+	}
+
+	bool start = false;
+	int nowPlayer = 0;
+	GameManager GM(Player1Monster, Player2Monster);
+	GM.GameStart();
+	string command;
+	while (CaseFile >> command)
+	{
+		if (command == "Test") testModeActive = true;
+		if (command == "Battle")
+		{
+			string command1, command2;
+			CaseFile >> command1 >> command2;
+			nowPlayer = GM.getNowPlayer();
+			if (nowPlayer == 1)
+			{
+				GM.Player1Battle(command1);
+				GM.Player2Battle(command2);
+			}
+			else
+			{
+				GM.Player2Battle(command1);
+				GM.Player1Battle(command2);
+			}
+		}
 	}
 }

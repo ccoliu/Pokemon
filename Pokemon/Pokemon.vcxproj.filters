@@ -37,5 +37,6 @@
     <Text Include="PokemonLib.txt" />
     <Text Include="MoveLib.txt" />
     <Text Include="GameData.txt" />
+    <Text Include="case.txt" />
   </ItemGroup>
 </Project>

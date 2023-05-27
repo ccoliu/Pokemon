@@ -16,11 +16,13 @@ private:
 	int SPattack;
 	int SPdefense;
 	int speed;
-	vector<Move> MonsterMove;
 public:
+	vector<Move> MonsterMove;
+	Monster() {};
 	Monster(string name, vector<Type> type, int HP, int attack, int defense, int SPattack, int SPdefense, int speed) : name(name), type(type), HP(HP), attack(attack),
 		defense(defense), SPattack(SPattack), SPdefense(SPdefense), speed(speed) {};
 	string getName() { return name; }
+	int getSpeed() { return speed; }
 	void addMove(Move move) { MonsterMove.push_back(move); }
 	friend ostream& operator<< (ostream& out, const Monster& monster)
 	{
