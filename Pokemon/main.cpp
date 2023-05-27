@@ -10,6 +10,7 @@ using namespace std;
 
 map<string, int> TypeMap = { {"Normal", 0}, {"Fire", 1}, {"Water", 2}, {"Electric", 3}, {"Grass", 4}, {"Ice", 5}, {"Fighting", 6}, {"Poison", 7}, {"Ground", 8}, {"Flying", 9}, {"Psychic", 10}, {"Bug", 11}, {"Rock", 12}, {"Ghost", 13}, {"Dragon", 14}, {"Dark", 15}, {"Steel", 16}, {"Fairy", 17} };
 
+
 int main()
 {
 	ifstream CaseFile;
@@ -171,13 +172,13 @@ int main()
 			nowPlayer = GM.getNowPlayer();
 			if (nowPlayer == 1)
 			{
-				GM.Player1Battle(command1);
-				GM.Player2Battle(command2);
+				while (GM.Player1Battle(command1) == false) CaseFile >> command1;
+				while (GM.Player2Battle(command2) == false) CaseFile >> command2;
 			}
 			else
 			{
-				GM.Player2Battle(command1);
-				GM.Player1Battle(command2);
+				while (GM.Player2Battle(command1) == false) CaseFile >> command1;
+				while (GM.Player1Battle(command2) == false) CaseFile >> command2;
 			}
 		}
 	}

@@ -2,3 +2,6 @@ PokemonLib.txt
 MoveLib.txt
 GameData.txt
 Battle
+VineWhip
+WaterGun
+
