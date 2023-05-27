@@ -27,9 +27,15 @@
     <ClInclude Include="Type.h">
       <Filter>資源檔</Filter>
     </ClInclude>
+    <ClInclude Include="TypeEffect.h">
+      <Filter>資源檔</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
+      <Filter>來源檔案</Filter>
+    </ClCompile>
+    <ClCompile Include="TypeEffect.cpp">
       <Filter>來源檔案</Filter>
     </ClCompile>
   </ItemGroup>

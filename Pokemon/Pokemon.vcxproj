@@ -131,9 +131,11 @@
     <ClInclude Include="Monster.h" />
     <ClInclude Include="Move.h" />
     <ClInclude Include="Type.h" />
+    <ClInclude Include="TypeEffect.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="TypeEffect.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="PokemonLib.txt" />
