@@ -9,5 +9,5 @@ public:
 	float typeEff[18][18] = { 0 };
 	TypeEffect();
 	~TypeEffect();
-	float TypePower(string attacker, string defender);
+	float TypePower(Type attacker, Type defender);
 };
