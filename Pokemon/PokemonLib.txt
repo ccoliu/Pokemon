@@ -1,0 +1,9 @@
+Venusaur
+2 Grass Poison
+187 147 148 167 167 145
+Charizard
+2 Fire Flying
+185 149 143 177 150 167
+Blastoise
+1 Water
+186 148 167 150 172 143
