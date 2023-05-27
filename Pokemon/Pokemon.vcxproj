@@ -136,6 +136,8 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="GameData.txt" />
+    <Text Include="MoveLib.txt" />
     <Text Include="PokemonLib.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

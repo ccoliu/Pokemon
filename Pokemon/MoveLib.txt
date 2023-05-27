@@ -1,0 +1,13 @@
+DragonClaw Dragon Physical 80 100 15
+Ember Fire Special 40 100 25
+DragonBreath Dragon Special 60 100 20 PAR
+AirSlash Flying Physical 75 95 15
+Flamethrower Fire Special 90 100 15 BRN
+FlashCannon Steel Special 80 100 10
+WaterGun Water Special 40 100 25
+WaterPulse Water Special 60 100 20
+AquaTail Water Physical 90 90 10
+PoisonPowder Poison Status 0 75 35 PSN
+SeedBomb Grass Physical 80 100 15
+VineWhip Grass Physical 45 100 25
+SolarBeam Grass Special 120 100 10

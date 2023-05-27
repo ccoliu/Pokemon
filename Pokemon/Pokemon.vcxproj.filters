@@ -35,5 +35,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="PokemonLib.txt" />
+    <Text Include="MoveLib.txt" />
+    <Text Include="GameData.txt" />
   </ItemGroup>
 </Project>
