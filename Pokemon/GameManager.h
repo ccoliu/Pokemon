@@ -73,11 +73,11 @@ public:
 		
 		if (usedMove.phys == Physical)
 		{
-			damage = damage * (double)attacker->attack / (double)defender->defense;
+			damage = damage * (double)attacker->attack / (double)defender->defense + 2.0;
 		}
 		else
 		{
-			damage = damage * (double)attacker->SPattack / (double)defender->SPdefense;
+			damage = damage * (double)attacker->SPattack / (double)defender->SPdefense + 2.0;
 		}
 
 		double typeEffect = 1.0;
