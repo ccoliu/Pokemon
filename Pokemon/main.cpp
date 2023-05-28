@@ -209,7 +209,7 @@ int main()
 			if (start == false) cout << "Game is not started!" << endl;
 			GM.showStatus();
 		}
-		if (command == "Browse")
+		if (command == "Browse") //DEV ONLY
 		{
 			cout << "Player " << nowPlayer << "'s Monster:" << endl;
 			GM.browseMonster();

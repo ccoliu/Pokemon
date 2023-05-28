@@ -64,7 +64,7 @@ public:
 			cout << "Player2 attack first!" << endl;
 		}
 	}
-	void browseMonster()
+	void browseMonster() //DEV ONLY
 	{
 		for (int i = 0; i < player1.size(); i++)
 		{
