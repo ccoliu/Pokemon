@@ -6,4 +6,5 @@ Battle
 VineWhip
 WaterGun
 Status
-Run
+Bag
+Hyper Potion

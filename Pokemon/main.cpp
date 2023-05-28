@@ -162,6 +162,7 @@ int main()
 	string command;
 	while (CaseFile >> command)
 	{
+		if (start) nowPlayer = GM.getNowPlayer();
 		if (command == "Test")
 		{
 			testModeActive = true;
@@ -186,6 +187,21 @@ int main()
 			{
 				while (GM.Player2Battle(command1) == false) CaseFile >> command1;
 				while (GM.Player1Battle(command2) == false) CaseFile >> command2;
+			}
+		}
+		if (command == "Bag")
+		{
+			if (nowPlayer != 1)
+			{
+				cout << "It's not your turn!" << endl;
+			}
+			else
+			{
+				cout << "Item's available: \"Potion\", \"Super Potion\", \"Hyper Potion\", \"Max Potion\"." << endl;
+				string item;
+				CaseFile.ignore();
+				getline(CaseFile, item);
+				while(GM.useItem(item) == false) getline(CaseFile, item);
 			}
 		}
 		if (command == "Status")
