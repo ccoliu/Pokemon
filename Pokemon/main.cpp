@@ -13,6 +13,7 @@ map<string, int> TypeMap = { {"Normal", 0}, {"Fire", 1}, {"Water", 2}, {"Electri
 
 int main()
 {
+	srand(time(NULL));
 	ifstream CaseFile;
 	CaseFile.open("case.txt");
 	string MonsterLibName, MoveLibName, GameDataName;
@@ -90,6 +91,7 @@ int main()
 			effect = PSN;
 		}
 		MoveLib.push_back(Move(movename, movetype, phys, power, accuracy, PP, effect));
+		effect = NOR;
 	}
 	Moves.close();
 	vector<Monster> Player1Monster;
@@ -123,9 +125,7 @@ int main()
 				}
 			}
 		}
-		cout << Player1Monster[i] << endl;
 	}
-	cout << endl;
 	int Player2MonsterNum;
 	GameData >> Player2MonsterNum;
 	for (int i = 0; i < Player2MonsterNum; i++)
@@ -154,19 +154,26 @@ int main()
 				}
 			}
 		}
-		cout << Player2Monster[i] << endl;
 	}
 
 	bool start = false;
 	int nowPlayer = 0;
 	GameManager GM(Player1Monster, Player2Monster);
-	GM.GameStart();
 	string command;
 	while (CaseFile >> command)
 	{
-		if (command == "Test") testModeActive = true;
+		if (command == "Test")
+		{
+			testModeActive = true;
+			cout << "Attention: Test Mode Activated." << endl;
+		}
 		if (command == "Battle")
 		{
+			if (start == false)
+			{
+				start = true;
+				GM.GameStart();
+			}
 			string command1, command2;
 			CaseFile >> command1 >> command2;
 			nowPlayer = GM.getNowPlayer();
@@ -180,6 +187,15 @@ int main()
 				while (GM.Player2Battle(command1) == false) CaseFile >> command1;
 				while (GM.Player1Battle(command2) == false) CaseFile >> command2;
 			}
+		}
+		if (command == "Status")
+		{
+			if (start == false) cout << "Game is not started!" << endl;
+			GM.showStatus();
+		}
+		if (command == "Run")
+		{
+			exit(1);
 		}
 	}
 }

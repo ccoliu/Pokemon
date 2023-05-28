@@ -21,3 +21,11 @@ enum Type
 	Steel,
 	Fairy
 };
+
+enum AdditionalEffect
+{
+	PAR,
+	BRN,
+	PSN,
+	NOR,
+};

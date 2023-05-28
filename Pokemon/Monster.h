@@ -9,17 +9,20 @@ class Monster
 {
 private:
 	string name;
+public:
 	vector<Type> type;
+	int maxHP;
+	int HP;
 	int attack;
 	int defense;
 	int SPattack;
 	int SPdefense;
 	int speed;
-public:
-	int HP;
+	int level = 50;
+	vector<AdditionalEffect> appliedEffect;
 	vector<Move> MonsterMove;
 	Monster() { name = "NULL"; };
-	Monster(string name, vector<Type> type, int HP, int attack, int defense, int SPattack, int SPdefense, int speed) : name(name), type(type), HP(HP), attack(attack),
+	Monster(string name, vector<Type> type, int HP, int attack, int defense, int SPattack, int SPdefense, int speed) : name(name), type(type), maxHP(HP), HP(HP), attack(attack),
 		defense(defense), SPattack(SPattack), SPdefense(SPdefense), speed(speed) {};
 	string getName() { return name; }
 	int getSpeed() { return speed; }
