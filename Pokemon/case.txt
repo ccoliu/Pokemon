@@ -5,6 +5,7 @@ Test
 Battle
 VineWhip
 WaterGun
+Browse
 Status
 Bag
 Hyper Potion

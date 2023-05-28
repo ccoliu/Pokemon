@@ -64,6 +64,13 @@ public:
 			cout << "Player2 attack first!" << endl;
 		}
 	}
+	void browseMonster()
+	{
+		for (int i = 0; i < player1.size(); i++)
+		{
+			cout << player1[i].getName() << " HP: " << player1[i].HP << "/" << player1[i].maxHP << endl;
+		}
+	}
 	void checkCondition(vector<Monster> player, string playername)
 	{
 		bool partyFainted = true;
