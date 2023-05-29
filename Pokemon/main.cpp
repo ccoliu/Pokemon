@@ -180,17 +180,22 @@ int main()
 			nowPlayer = GM.getNowPlayer();
 			if (nowPlayer == 1)
 			{
-				while (GM.Player1Battle(command1) == false) CaseFile >> command1;
-				while (GM.Player2Battle(command2) == false) CaseFile >> command2;
+				while (GM.Player1Battle(command1) == false && !CaseFile.eof()) CaseFile >> command1;
+				while (GM.Player2Battle(command2) == false && !CaseFile.eof()) CaseFile >> command2;
 			}
 			else
 			{
-				while (GM.Player2Battle(command1) == false) CaseFile >> command1;
-				while (GM.Player1Battle(command2) == false) CaseFile >> command2;
+				while (GM.Player2Battle(command1) == false && !CaseFile.eof()) CaseFile >> command1;
+				while (GM.Player1Battle(command2) == false && !CaseFile.eof()) CaseFile >> command2;
 			}
 		}
 		if (command == "Bag")
 		{
+			if (start == false)
+			{
+				cout << "Game is not started!" << endl;
+				continue;
+			}
 			if (nowPlayer != 1)
 			{
 				cout << "It's not your turn!" << endl;
@@ -201,12 +206,19 @@ int main()
 				string item;
 				CaseFile.ignore();
 				getline(CaseFile, item);
-				while(GM.useItem(item) == false) getline(CaseFile, item);
+				while(GM.useItem(item) == false && !CaseFile.eof()) getline(CaseFile, item);
+				string player2move;
+				CaseFile >> player2move;
+				while(GM.Player2Battle(player2move) == false && !CaseFile.eof()) CaseFile >> player2move;
 			}
 		}
 		if (command == "Status")
 		{
-			if (start == false) cout << "Game is not started!" << endl;
+			if (start == false)
+			{
+				cout << "Game is not started!" << endl;
+				continue;
+			}
 			GM.showStatus();
 		}
 		if (command == "Browse") //DEV ONLY

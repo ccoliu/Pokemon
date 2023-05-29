@@ -5,7 +5,11 @@ Test
 Battle
 VineWhip
 WaterGun
-Browse
 Status
 Bag
 Hyper Potion
+WaterPulse
+Battle
+SolarBeam
+FlashCannon
+DragonBreath
