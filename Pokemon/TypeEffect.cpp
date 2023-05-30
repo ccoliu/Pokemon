@@ -11,7 +11,7 @@ TypeEffect::TypeEffect()
 	}
 	//attacker normal
 	{
-		typeEff[Normal][Normal] = 0.5;
+		typeEff[Normal][Rock] = 0.5;
 		typeEff[Normal][Ghost] = 0;
 		typeEff[Normal][Steel] = 0.5;
 	}

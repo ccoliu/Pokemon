@@ -44,5 +44,6 @@
     <Text Include="MoveLib.txt" />
     <Text Include="GameData.txt" />
     <Text Include="case.txt" />
+    <Text Include="case2.txt" />
   </ItemGroup>
 </Project>

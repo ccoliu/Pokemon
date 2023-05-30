@@ -20,7 +20,7 @@ public:
 	int maxspeed;
 	int speed;
 	int level = 50;
-	vector<AdditionalEffect> appliedEffect;
+	map<AdditionalEffect, int> appliedEffect = { {BRN,0},{PSN,0},{PAR,0} };
 	vector<Move> MonsterMove;
 	Monster() { name = "NULL"; };
 	Monster(string name, vector<Type> type, int HP, int attack, int defense, int SPattack, int SPdefense, int speed) : name(name), type(type), maxHP(HP), HP(HP), attack(attack),

@@ -5,11 +5,17 @@ Test
 Battle
 VineWhip
 WaterGun
-Status
-Bag
-Hyper Potion
-WaterPulse
 Battle
-SolarBeam
+PoisonPowder
 FlashCannon
-DragonBreath
+Bag
+Potion
+Venusaur
+WaterPulse
+Status
+Check
+Pokemon
+Blastoise
+FlashCannon
+Status
+Run

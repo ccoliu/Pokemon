@@ -15,7 +15,7 @@ int main()
 {
 	srand(time(NULL));
 	ifstream CaseFile;
-	CaseFile.open("case.txt");
+	CaseFile.open("case2.txt");
 	string MonsterLibName, MoveLibName, GameDataName;
 	bool testModeActive = false;
 
@@ -58,40 +58,45 @@ int main()
 	Moves.open(MoveLibName);
 	string line = "";
 	string movename;
-	Type movetype;
+	string tp;
+	string ps;
+	Type movetype = Normal;
 	PhysicalSpecial phys;
 	int power;
 	int accuracy;
 	int PP;
+	string eff;
 	AdditionalEffect effect = NOR;
 	while (getline(Moves, line))
 	{
+
 		if (line == "") continue;
 		stringstream ss(line);
 		ss >> movename;
-		string temp;
-		ss >> temp;
-		movetype = Type(TypeMap[temp]);
-		ss >> temp;
-		phys = (temp == "Physical") ? Physical : Special;
+		ss >> tp;
+		movetype = Type(TypeMap[tp]);
+		ss >> ps;
+		phys = (ps == "Physical") ? Physical : Special;
 		ss >> power;
 		ss >> accuracy;
 		ss >> PP;
-		ss >> temp;
-		if (temp == "PAR")
+		ss >> eff;
+		if (eff == "PAR")
 		{
 			effect = PAR;
 		}
-		else if (temp == "BRN")
+		else if (eff == "BRN")
 		{
 			effect = BRN;
 		}
-		else if (temp == "PSN")
+		else if (eff == "PSN")
 		{
 			effect = PSN;
 		}
+		else effect = NOR;
 		MoveLib.push_back(Move(movename, movetype, phys, power, accuracy, PP, effect));
 		effect = NOR;
+		eff = "";
 	}
 	Moves.close();
 	vector<Monster> Player1Monster;
@@ -157,16 +162,48 @@ int main()
 	}
 
 	bool start = false;
+	bool player1MonsterFainted = false;
+	map<string, int> Player1Item;
+	map<string, int> Player1MonLib;
 	int nowPlayer = 0;
 	GameManager GM(Player1Monster, Player2Monster);
 	string command;
-	while (CaseFile >> command)
+	while (CaseFile >> command && !CaseFile.eof())
 	{
 		if (start) nowPlayer = GM.getNowPlayer();
+		if (player1MonsterFainted)
+		{
+			if (command != "Pokemon")
+			{
+				cout << "Player 1's monster has fainted. Please switch to another monster." << endl;
+				continue;
+			}
+		}
 		if (command == "Test")
 		{
 			testModeActive = true;
+			GM.TestModeActive();
 			cout << "Attention: Test Mode Activated." << endl;
+		}
+		if (command == "Pokemon")
+		{
+			Player1MonLib = GM.browseMonster();
+			string command1, command2;
+			CaseFile >> command1;
+			while (Player1MonLib.find(command1) == Player1MonLib.end() && !CaseFile.eof())
+			{
+				cout << "Invalid monster name. Please enter again." << endl;
+				CaseFile >> command1;
+			}
+			while (Player1MonLib[command1] == 0 && !CaseFile.eof())
+			{
+				cout << "The Monster you have chosen has fainted. Please choose another one." << endl;
+				CaseFile >> command1;
+			}
+			GM.swapMonster(command1);
+			player1MonsterFainted = false;
+			if (!CaseFile.eof()) CaseFile >> command2;
+			while (GM.Player2Battle(command2, player1MonsterFainted) == false && !CaseFile.eof()) CaseFile >> command2;
 		}
 		if (command == "Battle")
 		{
@@ -176,17 +213,18 @@ int main()
 				GM.GameStart();
 			}
 			string command1, command2;
-			CaseFile >> command1 >> command2;
+			if (!CaseFile.eof()) CaseFile >> command1 >> command2;
 			nowPlayer = GM.getNowPlayer();
 			if (nowPlayer == 1)
 			{
 				while (GM.Player1Battle(command1) == false && !CaseFile.eof()) CaseFile >> command1;
-				while (GM.Player2Battle(command2) == false && !CaseFile.eof()) CaseFile >> command2;
+				while (GM.Player2Battle(command2, player1MonsterFainted) == false && !CaseFile.eof()) CaseFile >> command2;
 			}
 			else
 			{
-				while (GM.Player2Battle(command1) == false && !CaseFile.eof()) CaseFile >> command1;
-				while (GM.Player1Battle(command2) == false && !CaseFile.eof()) CaseFile >> command2;
+				while (GM.Player2Battle(command2, player1MonsterFainted) == false && !CaseFile.eof()) CaseFile >> command2;
+				if (player1MonsterFainted) continue;
+				while (GM.Player1Battle(command1) == false && !CaseFile.eof()) CaseFile >> command1;
 			}
 		}
 		if (command == "Bag")
@@ -202,14 +240,33 @@ int main()
 			}
 			else
 			{
-				cout << "Item's available: \"Potion\", \"Super Potion\", \"Hyper Potion\", \"Max Potion\"." << endl;
+				cout << "Item's available: \"Potion\", \"SuperPotion\", \"HyperPotion\", \"MaxPotion\"." << endl;
+				Player1Item = GM.browseBag();
 				string item;
 				CaseFile.ignore();
-				getline(CaseFile, item);
-				while(GM.useItem(item) == false && !CaseFile.eof()) getline(CaseFile, item);
+				if (!CaseFile.eof()) getline(CaseFile, item);
+				while (Player1Item.find(item) == Player1Item.end() && !CaseFile.eof())
+				{
+					cout << "No such item!" << endl;
+					getline(CaseFile, item);
+				}
+				while (Player1Item[item] == 0 && !CaseFile.eof())
+				{
+					cout << "The item you have chosen is depleted!" << endl;
+					getline(CaseFile, item);
+				}
+				Player1MonLib = GM.browseMonster();
+				string chosenMonster;
+				if (!CaseFile.eof()) CaseFile >> chosenMonster;
+				while (Player1MonLib.find(chosenMonster) == Player1MonLib.end() && !CaseFile.eof())
+				{
+					cout << "Invalid monster name. Please enter again." << endl;
+					CaseFile >> chosenMonster;
+				}
+				GM.useItem(item, chosenMonster);
 				string player2move;
-				CaseFile >> player2move;
-				while(GM.Player2Battle(player2move) == false && !CaseFile.eof()) CaseFile >> player2move;
+				if (!CaseFile.eof()) CaseFile >> player2move;
+				while(GM.Player2Battle(player2move, player1MonsterFainted) == false && !CaseFile.eof()) CaseFile >> player2move;
 			}
 		}
 		if (command == "Status")
@@ -221,10 +278,9 @@ int main()
 			}
 			GM.showStatus();
 		}
-		if (command == "Browse") //DEV ONLY
+		if (command == "Check") //DEV ONLY
 		{
-			cout << "Player " << nowPlayer << "'s Monster:" << endl;
-			GM.browseMonster();
+			GM.browseMove();
 		}
 		if (command == "Run")
 		{
