@@ -1,3 +1,8 @@
+//File : main.cpp
+//Name : §fª@®p ¼B®a¦¨ ¤ý¬Rµ¾ ³¯©|¿A
+//First Update : 2023/5/27
+//Last Update : 2023/6/4
+//Description : Pokemon
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -18,7 +23,6 @@ int main()
 	CaseFile.open("case2.txt");
 	string MonsterLibName, MoveLibName, GameDataName;
 	bool testModeActive = false;
-
 	CaseFile >> MonsterLibName;
 	CaseFile >> MoveLibName;
 	CaseFile >> GameDataName;

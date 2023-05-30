@@ -1,6 +1,12 @@
+//File : GameManager.cpp
+//Name : §fª@®p ¼B®a¦¨ ¤ý¬Rµ¾ ³¯©|¿A
+//First Update : 2023/5/27
+//Last Update : 2023/6/4
+//Description : Pokemon
+
 #include "GameManager.h"
 #include <string>
-
+//start game and initialize
 void GameManager::GameStart()
 {
 	turns = 1;
@@ -8,6 +14,7 @@ void GameManager::GameStart()
 	player2PowerPoint = 100;
 	player1Active = &player1[0];
 	player2Active = &player2[0];
+	//judge which one pokemon move first
 	nowPlayer = (player1Active->getSpeed() >= player2Active->getSpeed()) ? 1 : 2;
 	cout << "Game start!" << endl;
 	if (nowPlayer == 1)
@@ -19,7 +26,7 @@ void GameManager::GameStart()
 		cout << "Player2 attack first!" << endl;
 	}
 }
-
+//TestMode
 void GameManager::TestModeActive()
 {
 	critRate = 0;
@@ -39,7 +46,7 @@ void GameManager::TestModeActive()
 		}
 	}
 }
-
+//change player's pokemon
 void GameManager::swapMonster(string chosenMonster)
 {
 	turnMessage = "[Turn " + to_string(turns) + "] ";
@@ -53,6 +60,7 @@ void GameManager::swapMonster(string chosenMonster)
 	{
 		if (player1[i].getName() == chosenMonster)
 		{
+			//check the chose monster hasn't die
 			if (player1Active->HP != 0)
 			{
 				cout << turnMessage << player1Active->getName() << " switch out!" << endl;
@@ -81,7 +89,7 @@ void GameManager::swapMonster(string chosenMonster)
 	turns++;
 	if ((turns - 1) % 2 == 0) RoundStart();
 }
-
+//print all player's pokemon
 map<string, int> GameManager::browseMonster()
 {
 	map<string, int> player1Monster;
@@ -93,7 +101,7 @@ map<string, int> GameManager::browseMonster()
 	}
 	return player1Monster;
 }
-
+//return player's bag
 map<string, int> GameManager::browseBag()
 {
 	return player1Bag;
@@ -107,10 +115,11 @@ void GameManager::browseMove()
 	}
 	cout << endl;
 }
-
+//check pokemon whether have all die
 void GameManager::checkCondition(vector<Monster> player, string playername)
 {
 	bool partyFainted = true;
+	//check every pokemon's hp
 	for (auto i = player.begin(); i != player.end(); i++)
 	{
 		if (i->HP != 0)
@@ -119,6 +128,7 @@ void GameManager::checkCondition(vector<Monster> player, string playername)
 			return;
 		}
 	}
+	//if all pokemon die judge who win
 	if (partyFainted)
 	{
 		win = true;
@@ -133,38 +143,44 @@ void GameManager::checkCondition(vector<Monster> player, string playername)
 		exit(1);
 	}
 }
-
+//check whether monster have specail effect
 void GameManager::checkMonsterEffects()
 {
+	//pokemon have burn effect
 	if (player1MonsterBurned)
 	{
 		player1Active->HP -= player1Active->maxHP / 16;
 		cout << blank << player1Active->getName() << " is hurt by burn!" << endl;
-		player1MonsterBurnedRound--;
+		player1MonsterBurnedRound--;	//after effect affect the pokemon its effect round minus one 
 		player1Active->appliedEffect[BRN] = player1MonsterBurnedRound;
+		//if special effect have over than print the information
 		if (player1MonsterBurnedRound == 0)
 		{
 			player1MonsterBurned = false;
 			cout << blank << player1Active->getName() << " is no longer burned!" << endl;
 		}
 	}
+	//pokemon have Poisoned effect
 	if (player1MonsterPoisoned)
 	{
 		player1Active->HP -= player1Active->maxHP / 16;
 		cout << blank << player1Active->getName() << " is hurt by its poisoning!" << endl;
 		player1MonsterPoisonedRound--;
 		player1Active->appliedEffect[PSN] = player1MonsterPoisonedRound;
+		//if special effect have over than print the information
 		if (player1MonsterPoisonedRound == 0)
 		{
 			player1MonsterPoisoned = false;
 			cout << blank << player1Active->getName() << " is no longer poisoned!" << endl;
 		}
 	}
+	//pokemon have Paralyzed effect
 	if (player1MonsterParalyzed)
 	{
 		player1Active->speed = player1Active->maxspeed / 2;
-		player1MonsterParalyzedRound--;
+		player1MonsterParalyzedRound--;	//after effect affect the pokemon its effect round minus one 
 		player1Active->appliedEffect[PAR] = player1MonsterParalyzedRound;
+		//if special effect have over than print the information
 		if (player1MonsterParalyzedRound == 0)
 		{
 			player1MonsterParalyzed = false;
@@ -172,36 +188,41 @@ void GameManager::checkMonsterEffects()
 			cout << blank << player1Active->getName() << " is no longer paralyzed!" << endl;
 		}
 	}
-
+	//pokemon have burn effect
 	if (player2MonsterBurned)
 	{
 		player2Active->HP -= player2Active->maxHP / 16;
 		cout << blank << "The opposing " << player2Active->getName() << " is hurt by burn!" << endl;
-		player2MonsterBurnedRound--;
+		player2MonsterBurnedRound--;	//after effect affect the pokemon its effect round minus one 
 		player2Active->appliedEffect[BRN] = player2MonsterBurnedRound;
+		//if special effect have over than print the information
 		if (player2MonsterBurnedRound == 0)
 		{
 			player2MonsterBurned = false;
 			cout << blank << player2Active->getName() << " is no longer burned!" << endl;
 		}
 	}
+	//pokemon have Poisoned effect
 	if (player2MonsterPoisoned)
 	{
 		player2Active->HP -= player2Active->maxHP / 16;
 		cout << blank << "The opposing " << player2Active->getName() << " is hurt by its poisoning!" << endl;
-		player2MonsterPoisonedRound--;
+		player2MonsterPoisonedRound--;	//after effect affect the pokemon its effect round minus one 
 		player2Active->appliedEffect[PSN] = player2MonsterPoisonedRound;
+		//if special effect have over than print the information
 		if (player2MonsterPoisonedRound == 0)
 		{
 			player2MonsterPoisoned = false;
 			cout << blank << player2Active->getName() << " is no longer poisoned!" << endl;
 		}
 	}
+	//pokemon have Paralyzed effect
 	if (player2MonsterParalyzed)
 	{
 		player2Active->speed = player2Active->maxspeed / 2;
-		player2MonsterParalyzedRound--;
+		player2MonsterParalyzedRound--;	//after effect affect the pokemon its effect round minus one 
 		player2Active->appliedEffect[PAR] = player2MonsterParalyzedRound;
+		//if special effect have over than print the information
 		if (player2MonsterParalyzedRound == 0)
 		{
 			player2MonsterParalyzed = false;
@@ -210,12 +231,12 @@ void GameManager::checkMonsterEffects()
 		}
 	}
 }
-
+//after two player move start a new round
 void GameManager::RoundStart()
 {
 	cout << "New Round!" << endl;
 	checkMonsterEffects();
-	nowPlayer = (player1Active->getSpeed() >= player2Active->getSpeed()) ? 1 : 2;
+	nowPlayer = (player1Active->getSpeed() >= player2Active->getSpeed()) ? 1 : 2;	//every round have to check the speed of pokemon
 	if (nowPlayer == 1)
 	{
 		cout << "Player1 attack first!" << endl;
@@ -225,7 +246,7 @@ void GameManager::RoundStart()
 		cout << "Player2 attack first!" << endl;
 	}
 }
-
+//print the status of current pokemon
 void GameManager::showStatus()
 {
 	cout << "Status: " << endl;
@@ -239,7 +260,7 @@ void GameManager::showStatus()
 	if (player2Active->appliedEffect[PSN] != 0) cout << "PSN" << " ";
 	cout << endl;
 }
-
+//calculate the damage of pokemon cause
 double GameManager::CalculateDamage(Move usedMove, Monster* defender, Monster* attacker)
 {
 	double damage;
@@ -273,11 +294,12 @@ double GameManager::CalculateDamage(Move usedMove, Monster* defender, Monster* a
 	{
 		cout << blank << "It's not effective!" << endl;
 	}
+	//multiplicate the type effect to damage
 	damage = damage * typeEffect;
-
+	//check whether have crit
 	int critDice = rand() % 100 + 1;
 	if (critDice <= critRate) { damage *= 1.5; cout << blank << "Critical hit!" << endl; }
-
+	//if crit then damage*1.5
 	for (int i = 0; i < attacker->type.size(); i++)
 	{
 		if (moveType == attacker->type[i])
@@ -285,7 +307,7 @@ double GameManager::CalculateDamage(Move usedMove, Monster* defender, Monster* a
 			damage = damage * 1.5;
 		}
 	}
-
+	//check whether cause the special effect
 	int appliedOnEffectDice = rand() % 100 + 1;
 	if (appliedOnEffectDice <= appliedOnEffectRate && usedMove.effect != NOR)
 	{
@@ -338,7 +360,6 @@ double GameManager::CalculateDamage(Move usedMove, Monster* defender, Monster* a
 			defender->appliedEffect[PAR] = 3;
 		}
 	}
-
 	return damage;
 }
 
