@@ -38,6 +38,9 @@
     <ClCompile Include="TypeEffect.cpp">
       <Filter>來源檔案</Filter>
     </ClCompile>
+    <ClCompile Include="GameManager.cpp">
+      <Filter>來源檔案</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="PokemonLib.txt" />

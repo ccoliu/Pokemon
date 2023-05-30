@@ -134,6 +134,7 @@
     <ClInclude Include="TypeEffect.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="TypeEffect.cpp" />
   </ItemGroup>
