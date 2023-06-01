@@ -12,7 +12,8 @@ using namespace std;
 enum PhysicalSpecial
 {
 	Physical,
-	Special
+	Special,
+	Status
 };
 
 class Move

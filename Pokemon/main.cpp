@@ -80,7 +80,7 @@ int main()
 		ss >> tp;
 		movetype = Type(TypeMap[tp]);
 		ss >> ps;
-		phys = (ps == "Physical") ? Physical : Special;
+		phys = (ps == "Physical") ? Physical : (ps == "Special" ? Special : Status);
 		ss >> power;
 		ss >> accuracy;
 		ss >> PP;
@@ -175,7 +175,7 @@ int main()
 	while (CaseFile >> command && !CaseFile.eof())
 	{
 		if (start) nowPlayer = GM.getNowPlayer();
-		if (player1MonsterFainted)
+		if (player1MonsterFainted || GM.player1MonsterFainted)
 		{
 			if (command != "Pokemon")
 			{
@@ -206,6 +206,7 @@ int main()
 			}
 			GM.swapMonster(command1);
 			player1MonsterFainted = false;
+			GM.player1MonsterFainted = false;
 			if (!CaseFile.eof()) CaseFile >> command2;
 			while (GM.Player2Battle(command2, player1MonsterFainted) == false && !CaseFile.eof()) CaseFile >> command2;
 		}
