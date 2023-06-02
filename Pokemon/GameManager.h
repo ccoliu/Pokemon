@@ -21,13 +21,13 @@ class GameManager
 private:
 	int turns;
 	int TURN;
-	bool win = false;
+	bool win = false;	//to check whether win
 	int nowPlayer = 0;
 	int dodgeRate = 1;
 	int critRate = 4;
 	int appliedOnEffectRate = 7;
-
-	vector<Monster> player1;
+	//player1's information
+	vector<Monster> player1;	//to save all player1's monster
 	int player1PowerPoint;
 	bool player1MonsterParalyzed = false;
 	bool player1MonsterBurned = false;
@@ -36,8 +36,8 @@ private:
 	int player1MonsterBurnedRound = 0;
 	int player1MonsterPoisonedRound = 0;
 	map<string, int> player1Bag = { {"Potion", 5}, {"SuperPotion", 3}, {"HyperPotion", 2}, {"MaxPotion", 1} };
-
-	vector<Monster> player2;
+	//player2's information
+	vector<Monster> player2;	//to save all player2's monster
 	int nextMonster = 1;
 	int player2PowerPoint;
 	bool player2MonsterParalyzed = false;
@@ -47,9 +47,8 @@ private:
 	int player2MonsterParalyzedRound = 0;
 	int player2MonsterBurnedRound = 0;
 	int player2MonsterPoisonedRound = 0;
-
-	Monster* player1Active;
-	Monster* player2Active;
+	Monster* player1Active;	//save player1's current monster
+	Monster* player2Active;	//save player2's current monster
 	TypeEffect typeEff = TypeEffect();
 	string turnMessage = "[Turn " + to_string(turns) + "] ";
 	string blank = "          ";

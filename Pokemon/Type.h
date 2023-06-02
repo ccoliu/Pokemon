@@ -5,7 +5,7 @@
 //Description : Pokemon
 
 #pragma once
-
+//enum all type
 enum Type
 {
 	Normal,
@@ -27,7 +27,7 @@ enum Type
 	Steel,
 	Fairy
 };
-
+//enum the additional effect
 enum AdditionalEffect
 {
 	PAR,

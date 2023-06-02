@@ -27,8 +27,9 @@ public:
 	int accuracy;
 	int PP;
 	AdditionalEffect effect;
-	Move() { name = "NULL"; };
+	Move() { name = "NULL"; };//default constructure
+	//constructure
 	Move(string name, Type type, PhysicalSpecial phys, int power, int accuracy, int PP, AdditionalEffect effect) : name(name), type(type), phys(phys), power(power), accuracy(accuracy), PP(PP), effect(effect) {};
-	string getName() { return name; }
+	string getName() { return name; }	//get the move name
 	PhysicalSpecial getPhys() { return phys; }
 };

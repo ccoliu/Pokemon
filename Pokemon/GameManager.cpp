@@ -60,15 +60,18 @@ void GameManager::swapMonster(string chosenMonster)
 	player1MonsterPoisonedRound = 0;
 	for (int i = 0; i < player1.size(); i++)
 	{
+		//check which one pokemon be chosen
 		if (player1[i].getName() == chosenMonster)
 		{
-			//check the chose monster hasn't die
+			//check the current monster hasn't die
 			if (player1Active->HP != 0)
 			{
 				cout << turnMessage << player1Active->getName() << " switch out!" << endl;
 				cout << blank << "Come back!" << endl;
 			}
+			//swap pokemon
 			player1Active = &player1[i];
+			//if be chosen pokemon have additional effect then set it
 			if (player1Active->appliedEffect[PSN] != 0)
 			{
 				player1MonsterPoisoned = true;
@@ -89,7 +92,7 @@ void GameManager::swapMonster(string chosenMonster)
 		}
 	}
 	turns++;
-	if ((turns - 1) % 2 == 0) RoundStart();
+	if ((turns - 1) % 2 == 0) RoundStart(); //new round
 }
 //print all player's pokemon
 map<string, int> GameManager::browseMonster()
@@ -130,7 +133,7 @@ void GameManager::checkCondition(vector<Monster> player, string playername)
 			return;
 		}
 	}
-	//if all pokemon die judge who win
+	//if all pokemon die then judge who win
 	if (partyFainted)
 	{
 		win = true;
@@ -375,9 +378,10 @@ double GameManager::CalculateDamage(Move usedMove, Monster* defender, Monster* a
 			}
 		}
 	}
-	//check whether cause the special effect
+	//check whether use special effect skill
 	if (usedMove.phys == Status)
 	{
+		//cause poison
 		if (usedMove.effect == PSN)
 		{
 			if (defender == player1Active)
@@ -394,6 +398,7 @@ double GameManager::CalculateDamage(Move usedMove, Monster* defender, Monster* a
 			}
 			defender->appliedEffect[PSN] = 3;
 		}
+		//cause burn
 		else if (usedMove.effect == BRN)
 		{
 			if (defender == player1Active)
@@ -410,6 +415,7 @@ double GameManager::CalculateDamage(Move usedMove, Monster* defender, Monster* a
 			}
 			defender->appliedEffect[BRN] = 3;
 		}
+		//cause par
 		else if (usedMove.effect == PAR)
 		{
 			if (defender == player1Active)
@@ -430,8 +436,10 @@ double GameManager::CalculateDamage(Move usedMove, Monster* defender, Monster* a
 	else
 	{
 		int appliedOnEffectDice = rand() % 100 + 1;
+		//check whether miss
 		if (appliedOnEffectDice <= appliedOnEffectRate && usedMove.effect != NOR)
 		{
+			//cause poison
 			if (usedMove.effect == PSN)
 			{
 				if (defender == player1Active)
@@ -448,6 +456,7 @@ double GameManager::CalculateDamage(Move usedMove, Monster* defender, Monster* a
 				}
 				defender->appliedEffect[PSN] = 3;
 			}
+			//cause burn
 			else if (usedMove.effect == BRN)
 			{
 				if (defender == player1Active)
@@ -464,6 +473,7 @@ double GameManager::CalculateDamage(Move usedMove, Monster* defender, Monster* a
 				}
 				defender->appliedEffect[BRN] = 3;
 			}
+			//cause par
 			else if (usedMove.effect == PAR)
 			{
 				if (defender == player1Active)
@@ -478,13 +488,12 @@ double GameManager::CalculateDamage(Move usedMove, Monster* defender, Monster* a
 					player2MonsterParalyzedRound = 3;
 					cout << blank << "The opposing target was paralyzed, so it may be unable to move!" << endl;
 				}
-				defender->appliedEffect[PAR] = 3;
+				defender->appliedEffect[PAR] = 3;	
 			}
 		}
 	}
 	return damage;
 }
-
 bool GameManager::Player1Battle(string moves)
 {
 	Move currentMove = Move();
@@ -519,30 +528,30 @@ bool GameManager::Player1Battle(string moves)
 					cout << blank << player1Active->getName() << " is paralyzed!" << endl;
 					cout << blank << "It can't move!" << endl;
 				}
+				//if no miss then cause damage
 				else
 				{
 					int dealtdamage = CalculateDamage(currentMove, player2Active, player1Active);
 					player2Active->HP -= dealtdamage;
 					cout << blank << moves << " deals " << dealtdamage << " damage!" << endl;
+					//if defender's pokemon die
 					if (player2Active->HP <= 0)
 					{
 						player2Active->HP = 0;
 						cout << blank << player2Active->getName() << " fainted!" << endl;
 						checkCondition(player2, "player2");
-
 						player2MonsterBurned = false;
 						player2MonsterBurnedRound = 0;
 						player2MonsterPoisoned = false;
 						player2MonsterPoisonedRound = 0;
 						player2MonsterParalyzed = false;
 						player2MonsterParalyzedRound = 0;
-
-						player2Active = &player2[nextMonster];
+						player2Active = &player2[nextMonster];//turn current pokemon to next one pokemon
 						nextMonster++;
 						player2FirstRoundFreeze = true;
 					}
 				}
-				player1PowerPoint += 20;
+				player1PowerPoint += 20;//every round will plus 20 PP to player
 				turns++;
 				if ((turns - 1) % 2 == 0)
 				{
@@ -593,6 +602,7 @@ bool GameManager::Player2Battle(string moves, bool& player1MonsterFainted)
 				int dodge = rand() % 100 + 1;
 				int accuracyDice = rand() % 100 + 1;
 				int paralyzeDice = rand() % 100 + 1;
+				//check whether any miss
 				if (dodge <= dodgeRate)
 				{
 					cout << blank << "Miss!" << endl;
@@ -611,6 +621,7 @@ bool GameManager::Player2Battle(string moves, bool& player1MonsterFainted)
 					int dealtdamage = CalculateDamage(currentMove, player1Active, player2Active);
 					player1Active->HP -= dealtdamage;
 					cout << blank << moves << " deals " << dealtdamage << " damage!" << endl;
+					//if player1 pokemon die
 					if (player1Active->HP <= 0)
 					{
 						player1Active->HP = 0;
@@ -642,8 +653,10 @@ void GameManager::useItem(string item, string chosenMonster)
 	turnMessage = "[Turn " + to_string(TURN) + "] ";
 	for (int i = 0; i < player1.size(); i++)
 	{
+		//use potion to chosen pokemon
 		if (chosenMonster == player1[i].getName())
 		{
+			//use potion
 			if (item == "Potion")
 			{
 				int recoveredHP = (player1[i].maxHP - player1[i].HP < 20) ? player1[i].maxHP - player1[i].HP : 20;
@@ -653,6 +666,7 @@ void GameManager::useItem(string item, string chosenMonster)
 				cout << blank << player1[i].getName() << " recovered " << recoveredHP << " HP!" << endl;
 				player1Bag[item]--;
 			}
+			//use super potion
 			if (item == "SuperPotion")
 			{
 				int recoveredHP = (player1[i].maxHP - player1[i].HP < 60) ? player1[i].maxHP - player1[i].HP : 60;
@@ -662,6 +676,7 @@ void GameManager::useItem(string item, string chosenMonster)
 				cout << blank << player1[i].getName() << " recovered " << recoveredHP << " HP!" << endl;
 				player1Bag[item]--;
 			}
+			//use hyper potion
 			if (item == "HyperPotion")
 			{
 				int recoveredHP = (player1[i].maxHP - player1[i].HP < 120) ? player1[i].maxHP - player1[i].HP : 120;
@@ -671,6 +686,7 @@ void GameManager::useItem(string item, string chosenMonster)
 				cout << blank << player1[i].getName() << " recovered " << recoveredHP << " HP!" << endl;
 				player1Bag[item]--;
 			}
+			//use Max potion
 			if (item == "MaxPotion")
 			{
 				int recoveredHP = player1[i].maxHP - player1[i].HP;

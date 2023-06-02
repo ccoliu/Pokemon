@@ -12,8 +12,8 @@ using namespace std;
 class TypeEffect
 {
 public:
-	float typeEff[18][18] = { 0 };
-	TypeEffect();
-	~TypeEffect();
-	float TypePower(Type attacker, Type defender);
+	float typeEff[18][18] = { 0 };	//tyoe grid
+	TypeEffect();	//default constructure
+	~TypeEffect();	//destructure
+	float TypePower(Type attacker, Type defender);	//get the type effect to calculate damage
 };

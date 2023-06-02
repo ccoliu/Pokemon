@@ -18,15 +18,15 @@ map<string, int> TypeMap = { {"Normal", 0}, {"Fire", 1}, {"Water", 2}, {"Electri
 
 int main()
 {
-	srand(time(NULL));
+	srand(time(NULL));//set random seed
 	ifstream CaseFile;
 	CaseFile.open("case2.txt");
-	string MonsterLibName, MoveLibName, GameDataName;
+	string MonsterLibName, MoveLibName, GameDataName;//save the file name
 	bool testModeActive = false;
 	CaseFile >> MonsterLibName;
 	CaseFile >> MoveLibName;
 	CaseFile >> GameDataName;
-	vector<Monster> MonsterLib;
+	vector<Monster> MonsterLib;	
 	vector<Move> MoveLib;
 	ifstream PokemonLib;
 	ifstream Moves;
@@ -73,8 +73,7 @@ int main()
 	AdditionalEffect effect = NOR;
 	while (getline(Moves, line))
 	{
-
-		if (line == "") continue;
+		if (line == "") continue;//no input
 		stringstream ss(line);
 		ss >> movename;
 		ss >> tp;
@@ -103,13 +102,15 @@ int main()
 		eff = "";
 	}
 	Moves.close();
-	vector<Monster> Player1Monster;
-	vector<Monster> Player2Monster;
+	vector<Monster> Player1Monster;	//save all player1 monster then it will be use on constructure of GameManager
+	vector<Monster> Player2Monster;	//save all player2 monster then it will be use on constructure of GameManager
 	ifstream GameData(GameDataName);
 	int Player1MonsterNum;
+	//read the number of monster
 	GameData >> Player1MonsterNum;
 	for (int i = 0; i < Player1MonsterNum; i++)
 	{
+		//read the monster from GaemDataName
 		string temp;
 		GameData >> temp;
 		for (int j = 0; j < MonsterLib.size(); j++)
@@ -120,7 +121,9 @@ int main()
 				break;
 			}
 		}
+		//read the skill from GaemDataName
 		int skillnum;
+		//read the number of skill
 		GameData >> skillnum;
 		for (int j = 0; j < skillnum; j++)
 		{
@@ -136,6 +139,7 @@ int main()
 		}
 	}
 	int Player2MonsterNum;
+	//read the number of monster
 	GameData >> Player2MonsterNum;
 	for (int i = 0; i < Player2MonsterNum; i++)
 	{
@@ -150,6 +154,7 @@ int main()
 			}
 		}
 		int skillnum;
+		//read the number of skill
 		GameData >> skillnum;
 		for (int j = 0; j < skillnum; j++)
 		{
@@ -183,26 +188,28 @@ int main()
 				continue;
 			}
 		}
+		//test mode
 		if (command == "Test")
 		{
 			testModeActive = true;
 			GM.TestModeActive();
 			cout << "Attention: Test Mode Activated." << endl;
 		}
+		//command is pokemon then swap pokemon
 		if (command == "Pokemon")
 		{
 			Player1MonLib = GM.browseMonster();
 			string command1, command2;
-			CaseFile >> command1;
+			CaseFile >> command1;//chose monster
 			while (Player1MonLib.find(command1) == Player1MonLib.end() && !CaseFile.eof())
 			{
 				cout << "Invalid monster name. Please enter again." << endl;
-				CaseFile >> command1;
+				CaseFile >> command1;	//read pokemon name again to it is correct
 			}
 			while (Player1MonLib[command1] == 0 && !CaseFile.eof())
 			{
 				cout << "The Monster you have chosen has fainted. Please choose another one." << endl;
-				CaseFile >> command1;
+				CaseFile >> command1;	//read pokemon name again to it is correct
 			}
 			GM.swapMonster(command1);
 			player1MonsterFainted = false;
@@ -234,11 +241,13 @@ int main()
 		}
 		if (command == "Bag")
 		{
+			//game hasn't start
 			if (start == false)
 			{
 				cout << "Game is not started!" << endl;
 				continue;
 			}
+			//player cannot use bag
 			if (nowPlayer != 1)
 			{
 				cout << "It's not your turn!" << endl;
@@ -246,27 +255,28 @@ int main()
 			else
 			{
 				cout << "Item's available: \"Potion\", \"SuperPotion\", \"HyperPotion\", \"MaxPotion\"." << endl;
-				Player1Item = GM.browseBag();
+				Player1Item = GM.browseBag();//show all player can use potion
 				string item;
 				CaseFile.ignore();
 				if (!CaseFile.eof()) getline(CaseFile, item);
+				//cannnot find this item
 				while (Player1Item.find(item) == Player1Item.end() && !CaseFile.eof())
 				{
 					cout << "No such item!" << endl;
-					getline(CaseFile, item);
+					getline(CaseFile, item);	//read again
 				}
 				while (Player1Item[item] == 0 && !CaseFile.eof())
 				{
 					cout << "The item you have chosen is depleted!" << endl;
-					getline(CaseFile, item);
+					getline(CaseFile, item);	//read again
 				}
 				Player1MonLib = GM.browseMonster();
 				string chosenMonster;
-				if (!CaseFile.eof()) CaseFile >> chosenMonster;
+				if (!CaseFile.eof()) CaseFile >> chosenMonster;//chose use potion to waht monster
 				while (Player1MonLib.find(chosenMonster) == Player1MonLib.end() && !CaseFile.eof())
 				{
 					cout << "Invalid monster name. Please enter again." << endl;
-					CaseFile >> chosenMonster;
+					CaseFile >> chosenMonster;//read again
 				}
 				GM.useItem(item, chosenMonster);
 				string player2move;
@@ -274,6 +284,7 @@ int main()
 				while(GM.Player2Battle(player2move, player1MonsterFainted) == false && !CaseFile.eof()) CaseFile >> player2move;
 			}
 		}
+		//status skill
 		if (command == "Status")
 		{
 			if (start == false)

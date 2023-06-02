@@ -28,10 +28,11 @@ public:
 	int speed;
 	int level = 50;
 	vector<Move> MonsterMove;
-	Monster() { name = "NULL"; };
+	Monster() { name = "NULL"; };	//default constructure
+	//constructure
 	Monster(string name, vector<Type> type, int HP, int attack, int defense, int SPattack, int SPdefense, int speed) : name(name), type(type), maxHP(HP), HP(HP), attack(attack),
 		defense(defense), SPattack(SPattack), SPdefense(SPdefense), maxspeed(speed), speed(speed) {};
-	string getName() { return name; }
-	int getSpeed() { return speed; }
+	string getName() { return name; }	//get the monster name
+	int getSpeed() { return speed; }	//get the monster speed to judge who first
 	void addMove(Move move) { MonsterMove.push_back(move); }
 };
