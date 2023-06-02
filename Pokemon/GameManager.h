@@ -20,6 +20,7 @@ class GameManager
 {
 private:
 	int turns;
+	int TURN;
 	bool win = false;
 	int nowPlayer = 0;
 	int dodgeRate = 1;
@@ -53,6 +54,8 @@ private:
 	string turnMessage = "[Turn " + to_string(turns) + "] ";
 	string blank = "          ";
 public:
+	bool player1MonsterFainted = false;
+
 	GameManager(vector<Monster> player1, vector<Monster> player2) : player1(player1), player2(player2) {};
 	void GameStart();
 	void TestModeActive();

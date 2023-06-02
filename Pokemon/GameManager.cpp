@@ -6,10 +6,12 @@
 
 #include "GameManager.h"
 #include <string>
+
 //start game and initialize
 void GameManager::GameStart()
 {
 	turns = 1;
+	TURN = 1;
 	player1PowerPoint = 100;
 	player2PowerPoint = 100;
 	player1Active = &player1[0];
@@ -49,7 +51,7 @@ void GameManager::TestModeActive()
 //change player's pokemon
 void GameManager::swapMonster(string chosenMonster)
 {
-	turnMessage = "[Turn " + to_string(turns) + "] ";
+	turnMessage = "[Turn " + to_string(TURN) + "] ";
 	player1MonsterParalyzed = false;
 	player1MonsterBurned = false;
 	player1MonsterPoisoned = false;
@@ -151,13 +153,24 @@ void GameManager::checkMonsterEffects()
 	{
 		player1Active->HP -= player1Active->maxHP / 16;
 		cout << blank << player1Active->getName() << " is hurt by burn!" << endl;
-		player1MonsterBurnedRound--;	//after effect affect the pokemon its effect round minus one 
-		player1Active->appliedEffect[BRN] = player1MonsterBurnedRound;
-		//if special effect have over than print the information
-		if (player1MonsterBurnedRound == 0)
+		if (player1Active->HP <= 0)
 		{
-			player1MonsterBurned = false;
-			cout << blank << player1Active->getName() << " is no longer burned!" << endl;
+			player1Active->HP = 0;
+			cout << blank << player1Active->getName() << " fainted!" << endl;
+			player1MonsterFainted = true;
+			checkCondition(player1, "player1");
+			return;
+		}
+		else
+		{
+			player1MonsterBurnedRound--;	//after effect affect the pokemon its effect round minus one 
+			player1Active->appliedEffect[BRN] = player1MonsterBurnedRound;
+			//if special effect have over than print the information
+			if (player1MonsterBurnedRound == 0)
+			{
+				player1MonsterBurned = false;
+				cout << blank << player1Active->getName() << " is no longer burned!" << endl;
+			}
 		}
 	}
 	//pokemon have Poisoned effect
@@ -165,13 +178,24 @@ void GameManager::checkMonsterEffects()
 	{
 		player1Active->HP -= player1Active->maxHP / 16;
 		cout << blank << player1Active->getName() << " is hurt by its poisoning!" << endl;
-		player1MonsterPoisonedRound--;
-		player1Active->appliedEffect[PSN] = player1MonsterPoisonedRound;
-		//if special effect have over than print the information
-		if (player1MonsterPoisonedRound == 0)
+		if (player1Active->HP <= 0)
 		{
-			player1MonsterPoisoned = false;
-			cout << blank << player1Active->getName() << " is no longer poisoned!" << endl;
+			player1Active->HP = 0;
+			cout << blank << player1Active->getName() << " fainted!" << endl;
+			player1MonsterFainted = true;
+			checkCondition(player1, "player1");
+			return;
+		}
+		else
+		{
+			player1MonsterPoisonedRound--;
+			player1Active->appliedEffect[PSN] = player1MonsterPoisonedRound;
+			//if special effect have over than print the information
+			if (player1MonsterPoisonedRound == 0)
+			{
+				player1MonsterPoisoned = false;
+				cout << blank << player1Active->getName() << " is no longer poisoned!" << endl;
+			}
 		}
 	}
 	//pokemon have Paralyzed effect
@@ -193,13 +217,34 @@ void GameManager::checkMonsterEffects()
 	{
 		player2Active->HP -= player2Active->maxHP / 16;
 		cout << blank << "The opposing " << player2Active->getName() << " is hurt by burn!" << endl;
-		player2MonsterBurnedRound--;	//after effect affect the pokemon its effect round minus one 
-		player2Active->appliedEffect[BRN] = player2MonsterBurnedRound;
-		//if special effect have over than print the information
-		if (player2MonsterBurnedRound == 0)
+		if (player2Active->HP <= 0)
 		{
+			player2Active->HP = 0;
+			cout << blank << player2Active->getName() << " fainted!" << endl;
+			checkCondition(player2, "player2");
+
 			player2MonsterBurned = false;
-			cout << blank << player2Active->getName() << " is no longer burned!" << endl;
+			player2MonsterBurnedRound = 0;
+			player2MonsterPoisoned = false;
+			player2MonsterPoisonedRound = 0;
+			player2MonsterParalyzed = false;
+			player2MonsterParalyzedRound = 0;
+
+			player2Active = &player2[nextMonster];
+			nextMonster++;
+			player2FirstRoundFreeze = true;
+			return;
+		}
+		else
+		{
+			player2MonsterBurnedRound--;	//after effect affect the pokemon its effect round minus one 
+			player2Active->appliedEffect[BRN] = player2MonsterBurnedRound;
+			//if special effect have over than print the information
+			if (player2MonsterBurnedRound == 0)
+			{
+				player2MonsterBurned = false;
+				cout << blank << player2Active->getName() << " is no longer burned!" << endl;
+			}
 		}
 	}
 	//pokemon have Poisoned effect
@@ -207,13 +252,33 @@ void GameManager::checkMonsterEffects()
 	{
 		player2Active->HP -= player2Active->maxHP / 16;
 		cout << blank << "The opposing " << player2Active->getName() << " is hurt by its poisoning!" << endl;
-		player2MonsterPoisonedRound--;	//after effect affect the pokemon its effect round minus one 
-		player2Active->appliedEffect[PSN] = player2MonsterPoisonedRound;
-		//if special effect have over than print the information
-		if (player2MonsterPoisonedRound == 0)
+		if (player2Active->HP <= 0)
 		{
+			player2Active->HP = 0;
+			cout << blank << player2Active->getName() << " fainted!" << endl;
+			checkCondition(player2, "player2");
+
+			player2MonsterBurned = false;
+			player2MonsterBurnedRound = 0;
 			player2MonsterPoisoned = false;
-			cout << blank << player2Active->getName() << " is no longer poisoned!" << endl;
+			player2MonsterPoisonedRound = 0;
+			player2MonsterParalyzed = false;
+			player2MonsterParalyzedRound = 0;
+
+			player2Active = &player2[nextMonster];
+			nextMonster++;
+			player2FirstRoundFreeze = true;
+		}
+		else
+		{
+			player2MonsterPoisonedRound--;	//after effect affect the pokemon its effect round minus one 
+			player2Active->appliedEffect[PSN] = player2MonsterPoisonedRound;
+			//if special effect have over than print the information
+			if (player2MonsterPoisonedRound == 0)
+			{
+				player2MonsterPoisoned = false;
+				cout << blank << player2Active->getName() << " is no longer poisoned!" << endl;
+			}
 		}
 	}
 	//pokemon have Paralyzed effect
@@ -265,51 +330,53 @@ double GameManager::CalculateDamage(Move usedMove, Monster* defender, Monster* a
 {
 	double damage;
 	damage = 0;
-	damage = (2.0 * (double)attacker->level + 10.0) / 250.0 * (double)usedMove.power;
+	if (usedMove.phys != Status)
+	{
+		damage = (2.0 * (double)attacker->level + 10.0) / 250.0 * (double)usedMove.power;
 
-	if (usedMove.phys == Physical)
-	{
-		damage = damage * (double)attacker->attack / (double)defender->defense + 2.0;
-	}
-	else
-	{
-		damage = damage * (double)attacker->SPattack / (double)defender->SPdefense + 2.0;
-	}
-
-	double typeEffect = 1.0;
-	Type moveType = usedMove.type;
-	for (int i = 0; i < defender->type.size(); i++)
-	{
-		typeEffect = typeEffect * typeEff.typeEff[moveType][defender->type[i]];
-	}
-	if (typeEffect >= 2)
-	{
-		cout << blank << "It's super effective!" << endl;
-	}
-	else if (typeEffect <= 0.5)
-	{
-		cout << blank << "It's not very effective..." << endl;
-	}
-	else if (typeEffect == 0)
-	{
-		cout << blank << "It's not effective!" << endl;
-	}
-	//multiplicate the type effect to damage
-	damage = damage * typeEffect;
-	//check whether have crit
-	int critDice = rand() % 100 + 1;
-	if (critDice <= critRate) { damage *= 1.5; cout << blank << "Critical hit!" << endl; }
-	//if crit then damage*1.5
-	for (int i = 0; i < attacker->type.size(); i++)
-	{
-		if (moveType == attacker->type[i])
+		if (usedMove.phys == Physical)
 		{
-			damage = damage * 1.5;
+			damage = damage * (double)attacker->attack / (double)defender->defense + 2.0;
+		}
+		else
+		{
+			damage = damage * (double)attacker->SPattack / (double)defender->SPdefense + 2.0;
+		}
+
+		double typeEffect = 1.0;
+		Type moveType = usedMove.type;
+		for (int i = 0; i < defender->type.size(); i++)
+		{
+			typeEffect = typeEffect * typeEff.typeEff[moveType][defender->type[i]];
+		}
+		if (typeEffect >= 2)
+		{
+			cout << blank << "It's super effective!" << endl;
+		}
+		else if (typeEffect <= 0.5)
+		{
+			cout << blank << "It's not very effective..." << endl;
+		}
+		else if (typeEffect == 0)
+		{
+			cout << blank << "It's not effective!" << endl;
+		}
+		//multiplicate the type effect to damage
+		damage = damage * typeEffect;
+		//check whether have crit
+		int critDice = rand() % 100 + 1;
+		if (critDice <= critRate) { damage *= 1.5; cout << blank << "Critical hit!" << endl; }
+		//if crit then damage*1.5
+		for (int i = 0; i < attacker->type.size(); i++)
+		{
+			if (moveType == attacker->type[i])
+			{
+				damage = damage * 1.5;
+			}
 		}
 	}
 	//check whether cause the special effect
-	int appliedOnEffectDice = rand() % 100 + 1;
-	if (appliedOnEffectDice <= appliedOnEffectRate && usedMove.effect != NOR)
+	if (usedMove.phys == Status)
 	{
 		if (usedMove.effect == PSN)
 		{
@@ -360,13 +427,68 @@ double GameManager::CalculateDamage(Move usedMove, Monster* defender, Monster* a
 			defender->appliedEffect[PAR] = 3;
 		}
 	}
+	else
+	{
+		int appliedOnEffectDice = rand() % 100 + 1;
+		if (appliedOnEffectDice <= appliedOnEffectRate && usedMove.effect != NOR)
+		{
+			if (usedMove.effect == PSN)
+			{
+				if (defender == player1Active)
+				{
+					player1MonsterPoisoned = true;
+					player1MonsterPoisonedRound = 3;
+					cout << blank << "Your monster was poisoned!" << endl;
+				}
+				else
+				{
+					player2MonsterPoisoned = true;
+					player2MonsterPoisonedRound = 3;
+					cout << blank << "The opposing target was poisoned!" << endl;
+				}
+				defender->appliedEffect[PSN] = 3;
+			}
+			else if (usedMove.effect == BRN)
+			{
+				if (defender == player1Active)
+				{
+					player1MonsterBurned = true;
+					player1MonsterBurnedRound = 3;
+					cout << blank << "Your monster was burned!" << endl;
+				}
+				else
+				{
+					player2MonsterBurned = true;
+					player2MonsterBurnedRound = 3;
+					cout << blank << "The opposing target was burned!" << endl;
+				}
+				defender->appliedEffect[BRN] = 3;
+			}
+			else if (usedMove.effect == PAR)
+			{
+				if (defender == player1Active)
+				{
+					player1MonsterParalyzed = true;
+					player1MonsterParalyzedRound = 3;
+					cout << blank << "Your monster was paralyzed, so it may be unable to move!" << endl;
+				}
+				else
+				{
+					player2MonsterParalyzed = true;
+					player2MonsterParalyzedRound = 3;
+					cout << blank << "The opposing target was paralyzed, so it may be unable to move!" << endl;
+				}
+				defender->appliedEffect[PAR] = 3;
+			}
+		}
+	}
 	return damage;
 }
 
 bool GameManager::Player1Battle(string moves)
 {
 	Move currentMove = Move();
-	turnMessage = "[Turn " + to_string(turns) + "] ";
+	turnMessage = "[Turn " + to_string(TURN) + "] ";
 	for (int i = 0; i < player1Active->MonsterMove.size(); i++)
 	{
 		if (moves == player1Active->MonsterMove[i].getName())
@@ -422,7 +544,11 @@ bool GameManager::Player1Battle(string moves)
 				}
 				player1PowerPoint += 20;
 				turns++;
-				if ((turns - 1) % 2 == 0) RoundStart();
+				if ((turns - 1) % 2 == 0)
+				{
+					TURN = (turns - 1) / 2 + 1;
+					RoundStart();
+				}
 				return true;
 			}
 		}
@@ -436,13 +562,17 @@ bool GameManager::Player1Battle(string moves)
 
 bool GameManager::Player2Battle(string moves, bool& player1MonsterFainted)
 {
-	turnMessage = "[Turn " + to_string(turns) + "] ";
+	turnMessage = "[Turn " + to_string(TURN) + "] ";
 	if (player2FirstRoundFreeze)
 	{
 		cout << turnMessage << "Go! " << player2Active->getName() << "!" << endl;
 		player2FirstRoundFreeze = false;
 		turns++;
-		if ((turns - 1) % 2 == 0) RoundStart();
+		if ((turns - 1) % 2 == 0)
+		{
+			TURN = (turns - 1) / 2 + 1;
+			RoundStart();
+		}
 		return true;
 	}
 	Move currentMove = Move();
@@ -491,7 +621,11 @@ bool GameManager::Player2Battle(string moves, bool& player1MonsterFainted)
 				}
 				player2PowerPoint += 20;
 				turns++;
-				if ((turns - 1) % 2 == 0) RoundStart();
+				if ((turns - 1) % 2 == 0)
+				{
+					TURN = (turns - 1) / 2 + 1;
+					RoundStart();
+				}
 				return true;
 			}
 		}
@@ -505,7 +639,7 @@ bool GameManager::Player2Battle(string moves, bool& player1MonsterFainted)
 //use potion to Pokemon
 void GameManager::useItem(string item, string chosenMonster)
 {
-	turnMessage = "[Turn " + to_string(turns) + "] ";
+	turnMessage = "[Turn " + to_string(TURN) + "] ";
 	for (int i = 0; i < player1.size(); i++)
 	{
 		if (chosenMonster == player1[i].getName())
@@ -546,7 +680,11 @@ void GameManager::useItem(string item, string chosenMonster)
 				player1Bag[item]--;
 			}
 			turns++;
-			if ((turns - 1) % 2 == 0) RoundStart();
+			if ((turns - 1) % 2 == 0)
+			{
+				TURN = (turns -1) / 2 + 1;
+				RoundStart();
+			}
 		}
 	}
 }
