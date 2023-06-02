@@ -502,7 +502,7 @@ bool GameManager::Player2Battle(string moves, bool& player1MonsterFainted)
 		return false;
 	}
 }
-
+//use potion to Pokemon
 void GameManager::useItem(string item, string chosenMonster)
 {
 	turnMessage = "[Turn " + to_string(turns) + "] ";
