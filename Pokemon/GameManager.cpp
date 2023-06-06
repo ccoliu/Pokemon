@@ -503,7 +503,7 @@ bool GameManager::Player1Battle(string moves)
 		if (moves == player1Active->MonsterMove[i].getName())
 		{
 			currentMove = player1Active->MonsterMove[i];
-			if (player1PowerPoint < currentMove.PP)
+			if (player1Active->MonsterMove[i].PP == 0)
 			{
 				cout << turnMessage << "Not enough PP!" << endl;
 				return false;
@@ -511,7 +511,7 @@ bool GameManager::Player1Battle(string moves)
 			else
 			{
 				cout << turnMessage << player1Active->getName() << " used " << moves << "!" << endl;
-				player1PowerPoint -= currentMove.PP;
+				player1Active->MonsterMove[i].PP--;
 				int dodge = rand() % 100 + 1;
 				int accuracyDice = rand() % 100 + 1;
 				int paralyzeDice = rand() % 100 + 1;
@@ -551,7 +551,6 @@ bool GameManager::Player1Battle(string moves)
 						player2FirstRoundFreeze = true;
 					}
 				}
-				player1PowerPoint += 20;//every round will plus 20 PP to player
 				turns++;
 				if ((turns - 1) % 2 == 0)
 				{
@@ -590,7 +589,7 @@ bool GameManager::Player2Battle(string moves, bool& player1MonsterFainted)
 		if (moves == player2Active->MonsterMove[i].getName())
 		{
 			currentMove = player2Active->MonsterMove[i];
-			if (player2PowerPoint < currentMove.PP)
+			if (player2Active->MonsterMove[i].PP == 0)
 			{
 				cout << turnMessage << "Not enough PP!" << endl;
 				return false;
@@ -598,7 +597,7 @@ bool GameManager::Player2Battle(string moves, bool& player1MonsterFainted)
 			else
 			{
 				cout << turnMessage << "The opposing " << player2Active->getName() << " used " << moves << "!" << endl;
-				player2PowerPoint--;
+				player2Active->MonsterMove[i].PP--;
 				int dodge = rand() % 100 + 1;
 				int accuracyDice = rand() % 100 + 1;
 				int paralyzeDice = rand() % 100 + 1;
@@ -630,7 +629,6 @@ bool GameManager::Player2Battle(string moves, bool& player1MonsterFainted)
 						player1MonsterFainted = true;
 					}
 				}
-				player2PowerPoint += 20;
 				turns++;
 				if ((turns - 1) % 2 == 0)
 				{
