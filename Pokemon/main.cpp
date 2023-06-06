@@ -198,6 +198,11 @@ int main()
 		//command is pokemon then swap pokemon
 		if (command == "Pokemon")
 		{
+			if (start == false)
+			{
+				cout << "Game is not started!" << endl;
+				continue;
+			}
 			Player1MonLib = GM.browseMonster();
 			string command1, command2;
 			CaseFile >> command1;//chose monster
@@ -277,6 +282,11 @@ int main()
 				{
 					cout << "Invalid monster name. Please enter again." << endl;
 					CaseFile >> chosenMonster;//read again
+				}
+				while (Player1MonLib[chosenMonster] == 0 && !CaseFile.eof())
+				{
+					cout << "The Monster you have chosen has fainted. Please choose another one." << endl;
+					CaseFile >> chosenMonster;	//read pokemon name again to it is correct
 				}
 				GM.useItem(item, chosenMonster);
 				string player2move;
