@@ -313,8 +313,8 @@ int main()
 		}
 		if (command == "Run")
 		{
-			exit(1);
 			system("pause");
+			exit(1);
 		}
 	}
 	system("pause");
