@@ -1,14 +1,16 @@
 # Pokemon
-寶可夢回合制對戰遊戲(Pokemon)
+BackGround
+We create this project is similar to the real game pokemon
 install
 https://github.com/ccoliu/Pokemon
 go to this github and download the zip then upzip it
 usage
-玩家可以自行輸入寶可夢以及他的攻擊招式屬性，一位玩家可以有3隻寶可夢，
-雙方按照寶可夢的速度來決定先攻擊者，最後當有一方的寶可夢全部死亡結束遊戲。
-遊戲過程中每一個回合會看寶可夢的速度來決定誰先攻擊，每一位玩家可以有5種選擇。
-第一個是普通攻擊。
-第二個是特殊攻擊。
-第三個是狀態攻擊(給對方施加特殊狀態)
-交換寶可夢。
-以及使用回復藥水。
+user can input file name to paly game，all move will need to in file,so user should input their command to file which they want to use。
+We have 7 command which are Test,Battle(start game also is battle),Bag(use potion),Pokemon(change Pokemon),Status(check the game status),Check(check what can you use or chose),Run(over the game).
+Input Test then into Test mode.
+Input Battle the game will start and user can chose skill to use we have 3 skill which normal attack,special attack,status effect attack.
+Input Bag then use need to input what potion he want to use and want to use it for which pokemon,we have 4 potino which are potion(heal 20 hp),superpotion(heal 60 hp),hyperpotion(heal 120 hp) and Maxpotion(heal to full).
+Input Pokemon then user need to input pokemon name to swap his pokemon.
+Input Status then user can check the status of game.
+Input Check then need to input what you want to check,it cna check pokenon,bag and pokemon move.
+Input Run to over the game.
