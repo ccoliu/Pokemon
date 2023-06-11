@@ -1,7 +1,6 @@
 PokemonLib.txt
 MoveLib.txt
 GameData.txt
-Test
 Battle
 VineWhip
 WaterGun

@@ -295,7 +295,7 @@ int main()
 				while(GM.Player2Battle(player2move, player1MonsterFainted) == false && !CaseFile.eof()) CaseFile >> player2move;
 			}
 		}
-		//status skill
+		//check game status 
 		if (command == "Status")
 		{
 			if (start == false)
