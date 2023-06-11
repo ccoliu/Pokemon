@@ -145,6 +145,7 @@ void GameManager::checkCondition(vector<Monster> player, string playername)
 		{
 			cout << "You win!" << endl;
 		}
+		system("pause");
 		exit(1);
 	}
 }
