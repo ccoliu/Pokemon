@@ -19,9 +19,11 @@ map<string, int> TypeMap = { {"Normal", 0}, {"Fire", 1}, {"Water", 2}, {"Electri
 int main()
 {
 	srand(time(NULL));//set random seed
-	system("pause");
+	string caseFileName;
+	cout << "Enter case file name: ";
+	cin >> caseFileName;
 	ifstream CaseFile;
-	CaseFile.open("case2.txt");
+	CaseFile.open(caseFileName);
 	string MonsterLibName, MoveLibName, GameDataName;//save the file name
 	bool testModeActive = false;
 	CaseFile >> MonsterLibName;
@@ -312,6 +314,8 @@ int main()
 		if (command == "Run")
 		{
 			exit(1);
+			system("pause");
 		}
 	}
+	system("pause");
 }
