@@ -19,6 +19,7 @@ map<string, int> TypeMap = { {"Normal", 0}, {"Fire", 1}, {"Water", 2}, {"Electri
 int main()
 {
 	srand(time(NULL));//set random seed
+	system("pause");
 	ifstream CaseFile;
 	CaseFile.open("case2.txt");
 	string MonsterLibName, MoveLibName, GameDataName;//save the file name
