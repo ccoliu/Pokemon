@@ -33,6 +33,7 @@ void GameManager::TestModeActive()
 {
 	critRate = 0;
 	appliedOnEffectRate = 100;
+    paralyzedRate = 100;
 	for (int i = 0; i < player1.size(); i++)
 	{
 		for (int j = 0; j < player1[i].MonsterMove.size(); j++)
@@ -524,7 +525,7 @@ bool GameManager::Player1Battle(string moves)
 				{
 					cout << blank << player2Active->getName() << " avoided the attack!" << endl;
 				}
-				else if (paralyzeDice <= 25 && player1MonsterParalyzed)
+				else if (paralyzeDice <= paralyzedRate && player1MonsterParalyzed)
 				{
 					cout << blank << player1Active->getName() << " is paralyzed!" << endl;
 					cout << blank << "It can't move!" << endl;
@@ -611,7 +612,7 @@ bool GameManager::Player2Battle(string moves, bool& player1MonsterFainted)
 				{
 					cout << blank << player1Active->getName() << " avoided the attack!" << endl;
 				}
-				else if (paralyzeDice <= 25 && player2MonsterParalyzed)
+				else if (paralyzeDice <= paralyzedRate && player2MonsterParalyzed)
 				{
 					cout << blank << "The opposing " << player2Active->getName() << " is paralyzed!" << endl;
 					cout << blank << "It can't move!" << endl;

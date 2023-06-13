@@ -26,6 +26,7 @@ private:
 	int dodgeRate = 1;
 	int critRate = 4;
 	int appliedOnEffectRate = 7;
+    int paralyzedRate = 25;
 	//player1's information
 	vector<Monster> player1;	//to save all player1's monster
 	int player1PowerPoint;
