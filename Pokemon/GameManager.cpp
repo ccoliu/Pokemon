@@ -34,6 +34,7 @@ void GameManager::TestModeActive()
 	critRate = 0;
 	appliedOnEffectRate = 100;
     paralyzedRate = 100;
+    dodgeRate = 0;
 	for (int i = 0; i < player1.size(); i++)
 	{
 		for (int j = 0; j < player1[i].MonsterMove.size(); j++)
